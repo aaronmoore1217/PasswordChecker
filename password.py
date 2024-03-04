@@ -26,6 +26,8 @@ def login():
             case 'y':
                 while not thing.checkPassword(password:=input('New Password: ')):
                     pass
+                while not password == input('Verify Password(type again): '):
+                    pass
                 thing.changePassword(LOGIN_FILE, username, password)
             case 'n':
                 pass
