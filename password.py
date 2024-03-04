@@ -1,17 +1,43 @@
+import csv
 import thing
 
-def userCheck(username, password):
-    if thing.checkUsername(username):
-        if thing.checkPassword(password):
-            return True
-        return 3
-    return 2
+LOGIN_FILE = 'PasswordChecker\passwords.csv'
 
-loggedIn = False
+def menu():
+    inp = ''
+    while (inp := input('login, signup, or quit: ').lower()) not in ('login', 'signup', 'quit'):
+        pass
+    if inp == 'login':
+        login()
+    if inp == 'signup':
+        signup()
+    if inp == 'quit':
+        quit()
 
-attempts = 5
+def login():
+    success = True
+    while success := not (thing.loginCheck(LOGIN_FILE, input('Username: '), input('Password: '))):
+        if input("login error, quit?: ").lower() == 'quit':
+            break
+    if not success:
+        print('successful login')
+    else:
+        menu()
+    
+def signup():
+    username, password = '', ''
+    while not (thing.checkUsername(username := input('Username: ')) and thing.checkPassword(password := input('Must contain a lowercase, uppercase, a number and a special character.\nPassword: '))):
+        if not thing.checkUsername(username):
+            print('username error! retry!')
+            continue
+        print('password error! retry!')
+    with open(LOGIN_FILE, 'a') as f:
+        writer = csv.writer(f, delimiter=',')
+        writer.writerow([username, password])
 
-while not loggedIn:
+menu()
+
+'''while not loggedIn:
     inp = input("login, signup, or quit: ").lower()
     while inp != 'login' and inp != 'signup' and inp != 'quit':
         inp = input('bad input! login, signup, or quit: ').lower()
@@ -27,7 +53,7 @@ while not loggedIn:
                 quit()
             else:
                 attempts -= 1
-                print('incorrect password! ' + f'{attempts}' + " attempts remaining")
+                print(f'incorrect password! {attempts} attempts remaining')
         print('5 unsuccessful attempts, quitting')
         quit()
     while inp == 'signup':
@@ -58,3 +84,6 @@ while not loggedIn:
             continue
     if inp == 'quit':
         quit()
+'''
+'''
+'''

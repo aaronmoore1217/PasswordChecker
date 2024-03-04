@@ -1,19 +1,14 @@
 import csv
-import re
+from re import match
 def loginCheck(filename, username, password):
     with open(filename, newline='\n') as csvfile:
         dipt = csv.reader(csvfile, delimiter=',')
         login = [username, password]
-        if login in dipt:
-            return True
-        return False
-
-
-def checkUsername(username):
-    
-    quit()
+        return login in dipt
+def checkUsername(username): 
+    return not ' ' in username if len(username) >= 3 else False
 def checkPassword(password):
-    quit()
+    return bool(match("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", password))
 
 ''' def checkPassword(password):
     regex = ({'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}, 
@@ -41,7 +36,7 @@ def checkPassword(password):
 #     else: 
 #         return True
 '''
-''' def csvToDict(filename)
+''' def csvToDict(filename):
     # try:
     #     file = open(filename, 'r')
     # except:
