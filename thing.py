@@ -5,8 +5,27 @@ def loginCheck(filename, username, password):
         dipt = csv.reader(csvfile, delimiter=',')
         login = [username, password]
         return login in dipt
+    
+def userSignup(filename, username, password):
+    with open(filename, 'a') as f:
+        writer = csv.writer(f, delimiter=',')
+        writer.writerow([username, password])
+        
+def changePassword(filename, username, password):
+        lisp=[]
+        with open(filename, 'r', newline='\n') as f:
+                for x in f:
+                        p = x.strip().split(',')
+                        if p[0] == username:
+                                p[1] = password
+                        lisp.append(p)
+        with open(filename, 'w', newline='\n') as f:
+                writer=csv.writer(f, delimiter=',')
+                writer.writerows(lisp)
+    
 def checkUsername(username): 
-    return not ' ' in username if len(username) >= 3 else False
+    return ' ' not in username if len(username) >= 3 else False
+
 def checkPassword(password):
     return bool(match("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", password))
 

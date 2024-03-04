@@ -1,39 +1,44 @@
-import csv
 import thing
 
-LOGIN_FILE = 'PasswordChecker\passwords.csv'
+LOGIN_FILE = 'PasswordChecker\\passwords.csv'
 
 def menu():
-    inp = ''
     while (inp := input('login, signup, or quit: ').lower()) not in ('login', 'signup', 'quit'):
         pass
-    if inp == 'login':
-        login()
-    if inp == 'signup':
-        signup()
-    if inp == 'quit':
-        quit()
+    match(inp):
+        case 'login':
+            login()
+        case 'signup':
+            signup()
+        case 'quit':
+            quit()
 
 def login():
-    success = True
-    while success := not (thing.loginCheck(LOGIN_FILE, input('Username: '), input('Password: '))):
+    while success := not (thing.loginCheck(LOGIN_FILE, username:=input('Username: '), input('Password: '))):
         if input("login error, quit?: ").lower() == 'quit':
             break
     if not success:
         print('successful login')
+        while  (inp:=input('Change Password? y/n: ')) not in ('y','n'):
+            pass
+        print(inp)
+        match(inp):
+            case 'y':
+                while not thing.checkPassword(password:=input('New Password: ')):
+                    pass
+                thing.changePassword(LOGIN_FILE, username, password)
+            case 'n':
+                pass
     else:
         menu()
     
 def signup():
-    username, password = '', ''
     while not (thing.checkUsername(username := input('Username: ')) and thing.checkPassword(password := input('Must contain a lowercase, uppercase, a number and a special character.\nPassword: '))):
         if not thing.checkUsername(username):
             print('username error! retry!')
             continue
         print('password error! retry!')
-    with open(LOGIN_FILE, 'a') as f:
-        writer = csv.writer(f, delimiter=',')
-        writer.writerow([username, password])
+    thing.userSignup(LOGIN_FILE, username, password)
 
 menu()
 
