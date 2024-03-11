@@ -1,9 +1,10 @@
 import csv
+from hashmaxxing import hashPassword
 from re import match
 def loginCheck(filename, username, password):
     with open(filename, newline='\n') as csvfile:
         dipt = csv.reader(csvfile, delimiter=',')
-        login = [username, password]
+        login = [username, hashPassword(password)]
         return login in dipt
     
 def userSignup(filename, username, password):
@@ -17,7 +18,7 @@ def changePassword(filename, username, password):
                 for x in f:
                         p = x.strip().split(',')
                         if p[0] == username:
-                                p[1] = password
+                                p[1] = hashPassword(password)
                         lisp.append(p)
         with open(filename, 'w', newline='\n') as f:
                 writer=csv.writer(f, delimiter=',')
